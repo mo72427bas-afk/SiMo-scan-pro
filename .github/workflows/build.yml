@@ -18,6 +18,9 @@ jobs:
       - name: Bootstrap
         working-directory: simo_scan_pro
         run: bash tool/bootstrap.sh
+      - name: Gradle opt-out
+        working-directory: simo_scan_pro
+        run: echo "android.newDsl=false" >> android/gradle.properties
       - name: Analyze
         working-directory: simo_scan_pro
         run: flutter analyze || true
