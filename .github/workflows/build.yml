@@ -15,12 +15,15 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
+          flutter-version: "3.35.x"
       - name: Bootstrap
         working-directory: simo_scan_pro
         run: bash tool/bootstrap.sh
       - name: Gradle opt-out
         working-directory: simo_scan_pro
-        run: echo "android.newDsl=false" >> android/gradle.properties
+        run: |
+          printf '\nandroid.newDsl=false\nandroid.builtInKotlin=false\n' >> android/gradle.properties
+          cat android/gradle.properties
       - name: Analyze
         working-directory: simo_scan_pro
         run: flutter analyze || true
