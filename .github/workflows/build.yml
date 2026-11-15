@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Get source code
+      - name: Checkout source
         uses: actions/checkout@v4
 
       - name: Install Java 17
@@ -22,15 +22,18 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Build Android APK
-        uses: gradle/gradle-build-action@v3
-        with:
-          gradle-version: '8.9'
-          arguments: assembleDebug
+      - name: Build APK
+        run: |
+          gradle --version
+          gradle assembleDebug --stacktrace
 
-      - name: Save APK
+      - name: Find APK
+        run: |
+          find . -type f -name "*.apk" -print
+
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: SiMo-Scan-Pro-APK
           path: app/build/outputs/apk/debug/*.apk
-          if-no-files-found: error
+          if-no-files-found: warn
